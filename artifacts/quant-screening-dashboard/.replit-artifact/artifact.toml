@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Quant Screening Dashboard"
+description = "A Python-inspired quantitative stock screening dashboard for NSE equities, with SMMA crossover detection, liquidity filters, ETQ windows, trade journaling, and explainable ML-style signal scoring in a safe demo mode."
+version = "1.0.0"
+id = "artifacts/quant-screening-dashboard"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18780
+
+[services.development]
+run = "pnpm --filter @workspace/quant-screening-dashboard run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/quant-screening-dashboard", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/quant-screening-dashboard/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18780"
+BASE_PATH = "/"
